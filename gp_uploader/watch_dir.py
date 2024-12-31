@@ -169,6 +169,7 @@ class Watcher:
         if host_file_size != device_file_size:
             device_file_path = self._push_to_device(host_file_path, device_file_path)
         time.sleep(5)
+        self.logger.info(device_file_path)
         self._send_intent(device_file_path)
         time.sleep(5)
         upload_button_xpath = '//*[@resource-id="com.google.android.apps.photos:id/upload_button" and @clickable="true" and @enabled="true"]'
