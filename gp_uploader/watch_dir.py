@@ -168,9 +168,13 @@ class Watcher:
         device_file_size = self._get_file_size_on_device(device_file_path)
         if host_file_size != device_file_size:
             device_file_path = self._push_to_device(host_file_path, device_file_path)
+        time.sleep(1)
         self._send_intent(device_file_path)
+        time.sleep(1)
         upload_button_xpath = '//*[@resource-id="com.google.android.apps.photos:id/upload_button" and @clickable="true" and @enabled="true"]'
+        time.sleep(5)
         self.adb_utils.wait_for_element_by_xpath(upload_button_xpath)
+        time.sleep(5)
         if not self.upload_btn_coords:
             self.upload_btn_coords = self.adb_utils.get_element_coordinates_by_xpath(upload_button_xpath)
         upload_status = self._start_upload()
