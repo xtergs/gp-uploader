@@ -63,7 +63,7 @@ class Adb_utils:
                     return element
             except Exception as e:
                 if "uiautomator dump is empty" in str(e):
-                    self.logger.warning(f"uiautomator dump is empty, retrying... ({retries + 1}/{max_retries})")
+                    print(f"uiautomator dump is empty, retrying... ({retries + 1}/{max_retries})")
                     retries += 1
                 else:
                     raise  # re-raise any other exceptions
