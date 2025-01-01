@@ -175,6 +175,7 @@ class Watcher:
         print("Media scanner updated.")
         
         self._send_intent(device_file_path)
+        time.sleep(5)
         upload_button_xpath = '//*[@resource-id="com.google.android.apps.photos:id/upload_button" and @clickable="true" and @enabled="true"]'
         self.adb_utils.wait_for_element_by_xpath(upload_button_xpath)
         if not self.upload_btn_coords:
