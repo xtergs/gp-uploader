@@ -168,10 +168,13 @@ class Watcher:
         device_file_size = self._get_file_size_on_device(device_file_path)
         if host_file_size != device_file_size:
             device_file_path = self._push_to_device(host_file_path, device_file_path)
-        time.sleep(5)
         self.logger.info(device_file_path)
+        
+        print("Refreshing media database...")
+        subprocess.run(self.device + ["shell", f'am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://{device_file_path}"'], capture_output=True, text=True, check=False)
+        print("Media scanner updated.")
+        
         self._send_intent(device_file_path)
-        time.sleep(5)
         upload_button_xpath = '//*[@resource-id="com.google.android.apps.photos:id/upload_button" and @clickable="true" and @enabled="true"]'
         time.sleep(10)
         self.adb_utils.wait_for_element_by_xpath(upload_button_xpath)
