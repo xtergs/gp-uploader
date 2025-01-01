@@ -52,13 +52,21 @@ class Adb_utils:
             subprocess.run(self.device + [ "shell", "input", "tap", str(x), str(y)])
         else:
             raise Exception(f"Element not found for coordinates: {coordinates}")
-
-    def wait_for_element_by_xpath(self, xpath, timeout=60):
+            
+    def wait_for_element_by_xpath(self, xpath, timeout=60, max_retries=10):
         start_time = time.time()
-        while time.time() - start_time < timeout:
-            element = self.get_element_coordinates_by_xpath(xpath)
-            if element:
-                return element
+        retries = 0
+        while time.time() - start_time < timeout and retries < max_retries:
+            try:
+                element = self.get_element_coordinates_by_xpath(xpath)
+                if element:
+                    return element
+            except Exception as e:
+                if "uiautomator dump is empty" in str(e):
+                    self.logger.warning(f"uiautomator dump is empty, retrying... ({retries + 1}/{max_retries})")
+                    retries += 1
+                else:
+                    raise  # re-raise any other exceptions
             time.sleep(1)  # Check every 1 second
         return None
 
